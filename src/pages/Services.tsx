@@ -51,7 +51,7 @@ const serviceDetails = [
 
 const Services = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <ServicesHero />
       {serviceDetails.map((service, i) => (
         <ServiceDetail key={i} {...service} />
