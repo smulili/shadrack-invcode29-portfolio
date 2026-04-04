@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
 const testimonials = [
+  {
+    quote: "I don't believe that we would have been successful without our collaboration with Orases.",
+    name: "Sarah Mitchell",
+    title: "CEO & Founder",
+  },
   {
     quote: "They plug in seamlessly to a team and can handle the full project end-to-end.",
     name: "Ken Isaacson",
@@ -17,57 +22,140 @@ const testimonials = [
     name: "Logan Gerber",
     title: "Marketing Director",
   },
+  {
+    quote: "Their team exceeded our expectations in every aspect of the project delivery.",
+    name: "Jessica Taylor",
+    title: "Director of Technology",
+  },
 ];
 
 const Testimonials = () => {
-  const [current, setCurrent] = useState(1);
+  const [current, setCurrent] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  const prev = () => setCurrent((c) => (c === 0 ? testimonials.length - 1 : c - 1));
-  const next = () => setCurrent((c) => (c === testimonials.length - 1 ? 0 : c + 1));
+  const getIndex = (offset: number) =>
+    (current + offset + testimonials.length) % testimonials.length;
+
+  const slide = useCallback(
+    (dir: number) => {
+      if (isAnimating) return;
+      setIsAnimating(true);
+      setCurrent((c) => (c + dir + testimonials.length) % testimonials.length);
+      setTimeout(() => setIsAnimating(false), 500);
+    },
+    [isAnimating]
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => slide(1), 6000);
+    return () => clearInterval(interval);
+  }, [slide]);
+
+  const positions = [
+    { offset: -1, className: "left" },
+    { offset: 0, className: "center" },
+    { offset: 1, className: "right" },
+  ];
 
   return (
-    <section className="bg-secondary/50 py-20">
+    <section className="bg-secondary/30 py-20 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="relative flex items-center justify-center">
-          <button onClick={prev} className="absolute left-0 z-10 p-2 text-foreground/40 hover:text-foreground transition-colors">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-center mb-2">
+          Real <span className="text-accent">Impact</span>.
+        </h2>
+        <p className="text-2xl md:text-3xl lg:text-4xl font-heading font-bold text-center mb-16">
+          Straight from Our Clients.
+        </p>
+
+        <div className="relative flex items-center justify-center min-h-[400px]">
+          <button
+            onClick={() => slide(-1)}
+            className="absolute left-2 md:left-8 z-20 p-2 text-foreground/40 hover:text-foreground transition-colors"
+            aria-label="Previous testimonial"
+          >
             <ChevronLeft className="w-10 h-10" />
           </button>
 
-          <div className="flex items-center justify-center gap-6 overflow-hidden max-w-5xl w-full">
-            {testimonials.map((t, i) => {
-              const isCenter = i === current;
+          <div className="relative w-full max-w-5xl flex items-center justify-center" style={{ perspective: "1000px" }}>
+            {positions.map(({ offset, className }) => {
+              const idx = getIndex(offset);
+              const t = testimonials[idx];
+              const isCenter = offset === 0;
+              const isLeft = offset === -1;
+
               return (
                 <div
-                  key={i}
-                  className={`transition-all duration-300 shrink-0 ${
+                  key={`${offset}-${idx}`}
+                  className={`absolute transition-all duration-500 ease-in-out bg-card rounded-lg shadow-lg ${
                     isCenter
-                      ? "w-full max-w-md bg-card shadow-xl rounded-lg p-8 scale-105 z-10"
-                      : "hidden lg:block w-full max-w-xs bg-card/60 rounded-lg p-6 scale-95 opacity-60"
+                      ? "z-10 scale-100 opacity-100 translate-x-0"
+                      : isLeft
+                      ? "z-0 scale-90 opacity-50 -translate-x-[60%] lg:-translate-x-[75%]"
+                      : "z-0 scale-90 opacity-50 translate-x-[60%] lg:translate-x-[75%]"
                   }`}
+                  style={{
+                    width: isCenter ? "min(420px, 85vw)" : "min(360px, 70vw)",
+                    transform: `${
+                      isCenter
+                        ? "translateX(0) scale(1)"
+                        : isLeft
+                        ? "translateX(-65%) scale(0.88)"
+                        : "translateX(65%) scale(0.88)"
+                    }`,
+                  }}
                 >
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-xs font-heading text-muted-foreground tracking-wider">REVIEWED ON</span>
-                    <span className="font-heading font-bold text-lg text-foreground">Clutch</span>
-                    <div className="flex ml-2">
-                      {[...Array(5)].map((_, si) => (
-                        <Star key={si} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      ))}
+                  <div className="p-6 md:p-8">
+                    <div className="flex items-center gap-2 mb-4 flex-wrap">
+                      <span className="text-xs font-heading text-muted-foreground tracking-wider uppercase">
+                        Reviewed on
+                      </span>
+                      <span className="font-heading font-bold text-lg text-foreground">
+                        Clutch
+                      </span>
+                      <div className="flex ml-1">
+                        {[...Array(5)].map((_, si) => (
+                          <Star
+                            key={si}
+                            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                          />
+                        ))}
+                      </div>
+                      <span className="text-xs text-muted-foreground ml-1">
+                        71 REVIEWS
+                      </span>
                     </div>
-                    <span className="text-xs text-muted-foreground ml-1">71 REVIEWS</span>
-                  </div>
-                  <div className="text-accent text-4xl font-serif leading-none mb-2">"</div>
-                  <p className={`text-foreground italic leading-relaxed mb-4 ${isCenter ? 'text-lg' : 'text-sm'}`}>
-                    {t.quote}
-                  </p>
-                  <div className="text-accent text-4xl font-serif text-right leading-none mb-4">"</div>
-                  <a href="#" className="text-teal-link font-heading font-semibold text-sm flex items-center gap-1 mb-4">
-                    See the project →
-                  </a>
-                  <div className="flex items-center gap-3 pt-4 border-t border-border">
-                    <div className="w-10 h-10 rounded-full bg-muted" />
-                    <div>
-                      <p className="font-heading font-bold text-sm text-foreground">{t.name}</p>
-                      <p className="text-xs text-muted-foreground">{t.title}</p>
+
+                    <div className="text-accent text-5xl font-serif leading-none mb-2">
+                      "
+                    </div>
+                    <p
+                      className={`text-foreground italic leading-relaxed mb-4 ${
+                        isCenter ? "text-base md:text-lg" : "text-sm"
+                      }`}
+                    >
+                      {t.quote}
+                    </p>
+                    <div className="text-accent text-5xl font-serif text-right leading-none mb-4">
+                      "
+                    </div>
+
+                    <a
+                      href="#"
+                      className="text-teal-link font-heading font-semibold text-sm flex items-center gap-1 mb-4 hover:underline"
+                    >
+                      See the project →
+                    </a>
+
+                    <div className="flex items-center gap-3 pt-4 border-t border-border">
+                      <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center font-heading font-bold text-sm text-muted-foreground">
+                        {t.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="font-heading font-bold text-sm text-foreground">
+                          {t.name}
+                        </p>
+                        <p className="text-xs text-muted-foreground">{t.title}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -75,9 +163,32 @@ const Testimonials = () => {
             })}
           </div>
 
-          <button onClick={next} className="absolute right-0 z-10 p-2 text-foreground/40 hover:text-foreground transition-colors">
+          <button
+            onClick={() => slide(1)}
+            className="absolute right-2 md:right-8 z-20 p-2 text-foreground/40 hover:text-foreground transition-colors"
+            aria-label="Next testimonial"
+          >
             <ChevronRight className="w-10 h-10" />
           </button>
+        </div>
+
+        <div className="flex justify-center gap-2 mt-8">
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                if (!isAnimating) {
+                  setIsAnimating(true);
+                  setCurrent(i);
+                  setTimeout(() => setIsAnimating(false), 500);
+                }
+              }}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                i === current ? "bg-accent w-6" : "bg-muted-foreground/30"
+              }`}
+              aria-label={`Go to testimonial ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
     </section>
