@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const testimonials = [
   {
@@ -32,6 +33,7 @@ const testimonials = [
 const Testimonials = () => {
   const [current, setCurrent] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const navigate = useNavigate();
 
   const getIndex = (offset: number) =>
     (current + offset + testimonials.length) % testimonials.length;
@@ -52,9 +54,9 @@ const Testimonials = () => {
   }, [slide]);
 
   const positions = [
-    { offset: -1, className: "left" },
-    { offset: 0, className: "center" },
-    { offset: 1, className: "right" },
+    { offset: -1 },
+    { offset: 0 },
+    { offset: 1 },
   ];
 
   return (
@@ -67,7 +69,7 @@ const Testimonials = () => {
           Straight from Our Clients.
         </p>
 
-        <div className="relative flex items-center justify-center min-h-[400px]">
+        <div className="relative flex items-center justify-center min-h-[420px]">
           <button
             onClick={() => slide(-1)}
             className="absolute left-2 md:left-8 z-20 p-2 text-foreground/40 hover:text-foreground transition-colors"
@@ -76,8 +78,8 @@ const Testimonials = () => {
             <ChevronLeft className="w-10 h-10" />
           </button>
 
-          <div className="relative w-full max-w-5xl flex items-center justify-center" style={{ perspective: "1000px" }}>
-            {positions.map(({ offset, className }) => {
+          <div className="relative w-full max-w-5xl flex items-center justify-center" style={{ perspective: "1200px" }}>
+            {positions.map(({ offset }) => {
               const idx = getIndex(offset);
               const t = testimonials[idx];
               const isCenter = offset === 0;
@@ -86,22 +88,18 @@ const Testimonials = () => {
               return (
                 <div
                   key={`${offset}-${idx}`}
-                  className={`absolute transition-all duration-500 ease-in-out bg-card rounded-lg shadow-lg ${
-                    isCenter
-                      ? "z-10 scale-100 opacity-100 translate-x-0"
-                      : isLeft
-                      ? "z-0 scale-90 opacity-50 -translate-x-[60%] lg:-translate-x-[75%]"
-                      : "z-0 scale-90 opacity-50 translate-x-[60%] lg:translate-x-[75%]"
-                  }`}
+                  className="absolute transition-all duration-500 ease-in-out rounded-lg shadow-lg"
                   style={{
-                    width: isCenter ? "min(420px, 85vw)" : "min(360px, 70vw)",
-                    transform: `${
-                      isCenter
-                        ? "translateX(0) scale(1)"
-                        : isLeft
-                        ? "translateX(-65%) scale(0.88)"
-                        : "translateX(65%) scale(0.88)"
-                    }`,
+                    width: isCenter ? "min(440px, 85vw)" : "min(380px, 72vw)",
+                    transform: isCenter
+                      ? "translateX(0) scale(1) translateZ(0)"
+                      : isLeft
+                      ? "translateX(-68%) scale(0.85) translateZ(-80px)"
+                      : "translateX(68%) scale(0.85) translateZ(-80px)",
+                    zIndex: isCenter ? 10 : 0,
+                    opacity: isCenter ? 1 : 0.5,
+                    filter: isCenter ? "none" : "blur(1px)",
+                    backgroundColor: isCenter ? "hsl(var(--card))" : "hsl(var(--muted))",
                   }}
                 >
                   <div className="p-6 md:p-8">
@@ -139,12 +137,12 @@ const Testimonials = () => {
                       "
                     </div>
 
-                    <a
-                      href="#"
+                    <button
+                      onClick={() => navigate("/")}
                       className="text-teal-link font-heading font-semibold text-sm flex items-center gap-1 mb-4 hover:underline"
                     >
                       See the project →
-                    </a>
+                    </button>
 
                     <div className="flex items-center gap-3 pt-4 border-t border-border">
                       <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center font-heading font-bold text-sm text-muted-foreground">
