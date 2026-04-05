@@ -1,6 +1,5 @@
 import {
   Award,
-  Users,
   MapPin,
   Mail,
   Phone,
@@ -9,6 +8,9 @@ import {
   Briefcase,
   Heart,
 } from "lucide-react";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
@@ -28,7 +30,7 @@ const leadership = [
       "Competitive tennis player with a disciplined approach to training and strategy — the same mindset I bring to software engineering.",
   },
   {
-    icon: Users,
+    icon: Award,
     title: "AYLF Member",
     description:
       "Active member of the African Youth Leadership Forum, committed to leadership development, community impact, and empowering the next generation.",
@@ -42,6 +44,42 @@ const leadership = [
 ];
 
 const About = () => {
+  const [contactForm, setContactForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setContactForm({ ...contactForm, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contactForm.firstName || !contactForm.lastName || !contactForm.email) {
+      toast.error("Please fill required fields");
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await supabase.from("contact_messages").insert({
+      first_name: contactForm.firstName,
+      last_name: contactForm.lastName,
+      email: contactForm.email,
+      phone: contactForm.phone || null,
+      message: contactForm.message || null,
+    });
+    setSubmitting(false);
+    if (error) {
+      toast.error("Failed to send message");
+    } else {
+      toast.success("Message sent successfully!");
+      setContactForm({ firstName: "", lastName: "", email: "", phone: "", message: "" });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -142,19 +180,31 @@ const About = () => {
               </div>
             </div>
 
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-heading font-bold tracking-wider mb-2">
                     FIRST NAME *
                   </label>
-                  <input className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors" />
+                  <input
+                    name="firstName"
+                    value={contactForm.firstName}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors"
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-heading font-bold tracking-wider mb-2">
                     LAST NAME *
                   </label>
-                  <input className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors" />
+                  <input
+                    name="lastName"
+                    value={contactForm.lastName}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors"
+                  />
                 </div>
               </div>
               <div>
@@ -162,24 +212,44 @@ const About = () => {
                   EMAIL *
                 </label>
                 <input
+                  name="email"
                   type="email"
+                  value={contactForm.email}
+                  onChange={handleChange}
+                  required
                   className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors"
                 />
               </div>
               <div>
                 <label className="block text-xs font-heading font-bold tracking-wider mb-2">
-                  MESSAGE *
+                  PHONE
+                </label>
+                <input
+                  name="phone"
+                  type="tel"
+                  value={contactForm.phone}
+                  onChange={handleChange}
+                  className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-heading font-bold tracking-wider mb-2">
+                  MESSAGE
                 </label>
                 <textarea
+                  name="message"
+                  value={contactForm.message}
+                  onChange={handleChange}
                   rows={4}
                   className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors resize-none"
                 />
               </div>
               <button
                 type="submit"
-                className="bg-accent text-accent-foreground font-heading font-bold py-3 px-10 rounded hover:brightness-110 transition-all flex items-center gap-2"
+                disabled={submitting}
+                className="bg-accent text-accent-foreground font-heading font-bold py-3 px-10 rounded hover:brightness-110 transition-all flex items-center gap-2 disabled:opacity-50"
               >
-                <Send className="w-4 h-4" /> Send Message
+                <Send className="w-4 h-4" /> {submitting ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   GraduationCap,
   Award,
@@ -16,6 +17,8 @@ import {
   MessageSquare,
   User,
 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -62,14 +65,42 @@ const skills = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
   const [supportForm, setSupportForm] = useState({
     fullName: "",
     email: "",
     comments: "",
   });
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setSupportForm({ ...supportForm, [e.target.name]: e.target.value });
+  };
+
+  const handleComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!supportForm.fullName || !supportForm.email || !supportForm.comments) {
+      toast.error("Please fill all fields");
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await supabase.from("comments").insert({
+      full_name: supportForm.fullName,
+      email: supportForm.email,
+      message: supportForm.comments,
+    });
+    setSubmitting(false);
+    if (error) {
+      toast.error("Failed to submit comment");
+    } else {
+      toast.success("Comment submitted successfully!");
+      setSupportForm({ fullName: "", email: "", comments: "" });
+    }
+  };
+
+  const handleSupportMe = () => {
+    // Paystack integration placeholder — user will integrate themselves
+    toast.info("Paystack payment gateway will be integrated here.");
   };
 
   return (
@@ -101,15 +132,14 @@ const Index = () => {
               >
                 Support My Work
               </a>
-              <a
-                href="/projects"
+              <button
+                onClick={() => navigate("/projects")}
                 className="border border-primary-foreground/30 text-primary-foreground font-heading font-bold px-8 py-3 rounded hover:border-accent hover:text-accent transition-all"
               >
                 View Projects
-              </a>
+              </button>
             </div>
           </div>
-          {/* Photo placeholder */}
           <div className="flex justify-center lg:justify-end">
             <div className="w-72 h-72 md:w-96 md:h-96 rounded-full border-4 border-accent/30 bg-hero/40 flex items-center justify-center overflow-hidden">
               <User className="w-32 h-32 text-primary-foreground/30" />
@@ -214,7 +244,7 @@ const Index = () => {
             Leave a comment or support my journey.
           </p>
 
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleComment}>
             <div>
               <label className="block text-xs font-heading font-bold text-primary-foreground tracking-wider mb-2">
                 FULL NAME *
@@ -223,6 +253,7 @@ const Index = () => {
                 name="fullName"
                 value={supportForm.fullName}
                 onChange={handleChange}
+                required
                 className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors"
               />
             </div>
@@ -235,6 +266,7 @@ const Index = () => {
                 type="email"
                 value={supportForm.email}
                 onChange={handleChange}
+                required
                 className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors"
               />
             </div>
@@ -246,6 +278,7 @@ const Index = () => {
                 name="comments"
                 value={supportForm.comments}
                 onChange={handleChange}
+                required
                 rows={4}
                 className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors resize-none"
               />
@@ -253,12 +286,14 @@ const Index = () => {
             <div className="flex gap-4 pt-4">
               <button
                 type="submit"
-                className="flex-1 flex items-center justify-center gap-2 bg-accent text-accent-foreground font-heading font-bold py-3 px-6 rounded hover:brightness-110 transition-all"
+                disabled={submitting}
+                className="flex-1 flex items-center justify-center gap-2 bg-accent text-accent-foreground font-heading font-bold py-3 px-6 rounded hover:brightness-110 transition-all disabled:opacity-50"
               >
-                <MessageSquare className="w-4 h-4" /> Comment
+                <MessageSquare className="w-4 h-4" /> {submitting ? "Sending..." : "Comment"}
               </button>
               <button
                 type="button"
+                onClick={handleSupportMe}
                 className="flex-1 flex items-center justify-center gap-2 border-2 border-accent text-accent font-heading font-bold py-3 px-6 rounded hover:bg-accent hover:text-accent-foreground transition-all"
               >
                 <Heart className="w-4 h-4" /> Support Me
