@@ -16,6 +16,7 @@ import {
   Heart,
   MessageSquare,
   User,
+  ArrowRight,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -64,6 +65,19 @@ const skills = [
   { name: "REST APIs", icon: Globe },
 ];
 
+const featuredProjects = [
+  {
+    title: "E-Commerce Platform",
+    description: "Full-stack e-commerce with payment integration and admin dashboard.",
+    category: "Software & Web Dev",
+  },
+  {
+    title: "AI Chatbot Assistant",
+    description: "ML-powered chatbot for customer support automation.",
+    category: "AI / Machine Learning",
+  },
+];
+
 const Index = () => {
   const navigate = useNavigate();
   const [supportForm, setSupportForm] = useState({
@@ -99,7 +113,6 @@ const Index = () => {
   };
 
   const handleSupportMe = () => {
-    // Paystack integration placeholder — user will integrate themselves
     toast.info("Paystack payment gateway will be integrated here.");
   };
 
@@ -142,14 +155,64 @@ const Index = () => {
           </div>
           <div className="flex justify-center lg:justify-end">
             <div className="w-72 h-72 md:w-96 md:h-96 rounded-full border-4 border-accent/30 bg-hero/40 flex items-center justify-center overflow-hidden">
+              {/* Replace this with your image: <img src="..." className="w-full h-full object-cover" /> */}
               <User className="w-32 h-32 text-primary-foreground/30" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Education */}
+      {/* Featured Projects - 3 tiles */}
       <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black mb-14 leading-tight">
+            Proven <span className="text-accent">Results</span> Executed at Speed
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {featuredProjects.map((project, i) => (
+              <div
+                key={i}
+                onClick={() => navigate("/projects")}
+                className="relative cursor-pointer rounded-lg overflow-hidden bg-hero min-h-[280px] flex flex-col justify-end hover:shadow-2xl transition-all group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-hero via-hero/80 to-hero/30" />
+                <div className="absolute top-5 left-5 z-10">
+                  <span className="bg-accent text-accent-foreground font-heading font-bold text-xs px-3 py-1 rounded">
+                    {project.category}
+                  </span>
+                </div>
+                <div className="relative z-10 p-6">
+                  <h3 className="font-heading font-black text-xl text-primary-foreground mb-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-primary-foreground/60 font-body text-sm mb-3">
+                    {project.description}
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-accent font-heading font-semibold text-sm group-hover:underline">
+                    View Project <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </div>
+            ))}
+            {/* See More tile */}
+            <div
+              onClick={() => navigate("/projects")}
+              className="cursor-pointer rounded-lg overflow-hidden bg-accent min-h-[280px] flex flex-col items-center justify-center hover:brightness-110 transition-all group"
+            >
+              <h3 className="font-heading font-black text-2xl text-accent-foreground mb-2">
+                See More
+              </h3>
+              <p className="text-accent-foreground/70 font-body text-sm mb-4">
+                View all projects
+              </p>
+              <ArrowRight className="w-8 h-8 text-accent-foreground group-hover:translate-x-1 transition-transform" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Education */}
+      <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black mb-14 leading-tight">
             Education & <span className="text-accent">Qualifications</span>
@@ -177,7 +240,7 @@ const Index = () => {
       </section>
 
       {/* Certifications */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black mb-14 leading-tight">
             <span className="text-accent">Certifications</span>
@@ -211,7 +274,7 @@ const Index = () => {
       </section>
 
       {/* Skills & Languages */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black mb-14 leading-tight">
             Skills & <span className="text-accent">Languages</span>
@@ -234,19 +297,19 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Support My Career */}
-      <section id="support" className="py-20 bg-hero text-primary-foreground">
+      {/* Support My Career - white form */}
+      <section id="support" className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-2xl">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black mb-4 leading-tight text-center">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-heading font-black mb-4 leading-tight text-center text-foreground">
             Support My <span className="text-accent">Career & Work</span>
           </h2>
-          <p className="text-primary-foreground/60 font-body text-center mb-12">
+          <p className="text-muted-foreground font-body text-center mb-12">
             Leave a comment or support my journey.
           </p>
 
-          <form className="space-y-6" onSubmit={handleComment}>
+          <form className="bg-card border border-border rounded-lg p-8 shadow-lg space-y-5" onSubmit={handleComment}>
             <div>
-              <label className="block text-xs font-heading font-bold text-primary-foreground tracking-wider mb-2">
+              <label className="block text-xs font-heading font-bold text-foreground tracking-wider mb-2">
                 FULL NAME *
               </label>
               <input
@@ -254,11 +317,11 @@ const Index = () => {
                 value={supportForm.fullName}
                 onChange={handleChange}
                 required
-                className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors"
+                className="w-full border border-border rounded px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
               />
             </div>
             <div>
-              <label className="block text-xs font-heading font-bold text-primary-foreground tracking-wider mb-2">
+              <label className="block text-xs font-heading font-bold text-foreground tracking-wider mb-2">
                 EMAIL *
               </label>
               <input
@@ -267,11 +330,11 @@ const Index = () => {
                 value={supportForm.email}
                 onChange={handleChange}
                 required
-                className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors"
+                className="w-full border border-border rounded px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:border-accent transition-colors"
               />
             </div>
             <div>
-              <label className="block text-xs font-heading font-bold text-primary-foreground tracking-wider mb-2">
+              <label className="block text-xs font-heading font-bold text-foreground tracking-wider mb-2">
                 COMMENTS *
               </label>
               <textarea
@@ -280,10 +343,10 @@ const Index = () => {
                 onChange={handleChange}
                 required
                 rows={4}
-                className="w-full bg-transparent border-b border-primary-foreground/30 text-primary-foreground py-2 focus:outline-none focus:border-accent transition-colors resize-none"
+                className="w-full border border-border rounded px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:border-accent transition-colors resize-none"
               />
             </div>
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-4 pt-2">
               <button
                 type="submit"
                 disabled={submitting}
