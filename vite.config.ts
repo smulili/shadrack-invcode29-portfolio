@@ -4,6 +4,10 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // ✅ ADDED: Ensures all assets are loaded relative to index.html
+  // This prevents 404s on sub-routes when using HashRouter
+  base: "./", 
+
   server: {
     host: "::",
     port: 8080,
@@ -11,6 +15,7 @@ export default defineConfig(({ mode }) => ({
       overlay: false,
     },
   },
+  
   // CLEANED: Removed lovable-tagger from the plugins array
   plugins: [
     react(),
