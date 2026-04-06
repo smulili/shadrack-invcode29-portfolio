@@ -66,7 +66,7 @@ const projects = [
     image: "https://three29.com/wp-content/uploads/2024/02/Mikuniclipped-2x.png",
   },
   {
-    title: "Mikuni sushi web development ",
+    title: "cobram estate web development ",
     description: "A new website for a growing olive oil brand whose story of conservation and quality control place their product head and shoulders above their competition.",
     tags: ["React", "D3.js", "REST API"],
     link: "https://cobramestate.com/",
