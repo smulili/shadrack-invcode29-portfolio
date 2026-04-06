@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Mail, Phone, MapPin, Github, Linkedin, Twitter, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import logo from "../assets/logo3.svg"; // added logo
 
 const Footer = () => {
   const location = useLocation();
@@ -33,13 +34,15 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <h3 className="font-heading font-black text-xl mb-4">PORTFOLIO</h3>
+            <img src={logo} alt="Logo" className="h-12  mb-4" />
+
             <p className="text-primary-foreground/60 font-body text-sm leading-relaxed mb-6">
               Software & Digital Innovation. Building solutions that make an impact.
             </p>
+
             <div className="flex gap-3">
               {[
-                { icon: Github, href: "https://github.com" },
+                { icon: Github, href: "https://shaddev-254.github.io" },
                 { icon: Linkedin, href: "https://linkedin.com" },
                 { icon: Twitter, href: "https://twitter.com" },
                 { icon: MessageCircle, href: "https://wa.me/254702276873" },
@@ -86,8 +89,8 @@ const Footer = () => {
           <div>
             <h4 className="font-heading font-bold text-sm tracking-wider mb-4 text-accent">CONTACT</h4>
             <div className="space-y-3">
-              <a href="mailto:hello@example.com" className="flex items-center gap-2 text-primary-foreground/60 hover:text-accent transition-colors text-sm">
-                <Mail className="w-4 h-4" /> hello@example.com
+              <a href="mailto:smuili77@gmail.com" className="flex items-center gap-2 text-primary-foreground/60 hover:text-accent transition-colors text-sm">
+                <Mail className="w-4 h-4" /> smuili77@gmail.com
               </a>
               <a href="tel:+254702276873" className="flex items-center gap-2 text-primary-foreground/60 hover:text-accent transition-colors text-sm">
                 <Phone className="w-4 h-4" /> +254 702 276 873
@@ -128,7 +131,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-primary-foreground/10 mt-12 pt-6 text-center text-primary-foreground/40 text-xs font-body">
-          © {new Date().getFullYear()} Portfolio. All rights reserved.
+          © {new Date().getFullYear()} Portfolio. All rights reserved.Powered by invcode29 
         </div>
       </div>
     </footer>

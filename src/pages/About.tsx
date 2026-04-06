@@ -155,13 +155,13 @@ const About = () => {
               </p>
               <div className="space-y-5">
                 <a
-                  href="mailto:hello@example.com"
+                  href="mailto:smuili77@gmail.com"
                   className="flex items-center gap-3 text-muted-foreground hover:text-accent transition-colors"
                 >
                   <div className="w-10 h-10 rounded-full border border-accent flex items-center justify-center">
                     <Mail className="w-4 h-4 text-accent" />
                   </div>
-                  <span className="font-body">hello@example.com</span>
+                  <span className="font-body">smuili77@gmail.com</span>
                 </a>
                 <a
                   href="tel:+254702276873"

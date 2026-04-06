@@ -4,28 +4,28 @@ import { useNavigate } from "react-router-dom";
 
 const testimonials = [
   {
-    quote: "I don't believe that we would have been successful without our collaboration with Orases.",
-    name: "Sarah Mitchell",
+    quote: "I don't believe that we would have been successful without our collaboration with Shadrack and InvCode29.",
+    name: "Vivian Mitchell",
     title: "CEO & Founder",
   },
   {
-    quote: "They plug in seamlessly to a team and can handle the full project end-to-end.",
+    quote: "He plugs in seamlessly to a team and can handle the full project end-to-end.",
     name: "Ken Isaacson",
     title: "VP of Project Management",
   },
   {
-    quote: "They're honorable, reputable, and easy to work with. They genuinely care about the outcome and want to do a good job.",
-    name: "Matt Owings",
-    title: "President",
+    quote: "He's honorable, reputable, and easy to work with. Shadrack genuinely cares about the outcome and wants to do a good job.",
+    name: "James Owings",
+    title: "CTO & Co-Founder ",
   },
   {
-    quote: "Orases successfully built efficiencies into our prototype and delivered a high-quality platform.",
-    name: "Logan Gerber",
+    quote: "Shadrack successfully built efficiencies into our prototype and delivered a high-quality platform.",
+    name: "Racheal Gerber",
     title: "Marketing Director",
   },
   {
-    quote: "Their team exceeded our expectations in every aspect of the project delivery.",
-    name: "Jessica Taylor",
+    quote: "He exceeded our expectations in every aspect of the project delivery.",
+    name: "Mark Taylor",
     title: "Director of Technology",
   },
 ];
@@ -119,7 +119,7 @@ const Testimonials = () => {
                         ))}
                       </div>
                       <span className="text-xs text-muted-foreground ml-1">
-                        71 REVIEWS
+                        11 REVIEWS
                       </span>
                     </div>
 

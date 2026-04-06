@@ -1,0 +1,44 @@
+<svg viewBox="0 60 920 280" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;800&amp;display=swap');
+    
+    /* Background and centering removed for transparency and natural sizing */
+    .terminal-bold { font-family: 'JetBrains Mono', monospace; font-weight: 800; }
+    .terminal-light { font-family: 'JetBrains Mono', monospace; font-weight: 300; letter-spacing: 0.5px; }
+
+    /* SHARP TERMINAL BLINK (Snap On/Off) */
+    @keyframes terminalSnap {
+      0%, 49% { fill: #C2D501; opacity: 1; }
+      50%, 100% { fill: #777777; opacity: 0.3; }
+    }
+
+    .green-blink { 
+      animation: terminalSnap 0.8s infinite step-end; 
+    }
+  </style>
+
+  <g transform="translate(45, 10)">
+    <circle cx="110" cy="175" r="70" fill="#101C28"/>
+    
+    <circle cx="128" cy="75" r="14" fill="#C2D501"/> 
+    
+    <rect x="93" y="120" width="22" height="100" class="green-blink" rx="5" transform="rotate(15, 110, 175)"/>
+    
+    <text x="112" y="215" class="terminal-bold" font-size="12" fill="#C2D501">_code29</text>
+
+    <text x="220" y="170" class="terminal-bold" font-size="95" fill="#101C28">InvCode</text>
+    <text x="665" y="170" class="terminal-bold" font-size="95" fill="#C2D501">29</text>
+
+    <text x="220" y="230" class="terminal-light" font-size="19" fill="#101C28">
+      &gt; CONSULTING • INTEGRATIONS • DEVELOPMENT
+    </text>
+
+    <rect x="220" y="245" width="560" height="3" fill="#C2D501" opacity="0.2"/>
+    
+    <text x="220" y="275" class="terminal-light" font-size="12">
+      <tspan class="green-blink">[SYSTEM_ACTIVE]</tspan>
+      <tspan fill="#777777">: SUPPORT_SERVICES_ONLINE</tspan>
+      <tspan class="green-blink">_</tspan>
+    </text>
+  </g>
+</svg>
