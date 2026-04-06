@@ -105,6 +105,8 @@ const ServicesHero = () => {
                   <option>$25,000 - $50,000</option>
                   <option>$50,000 - $100,000</option>
                   <option>$100,000+</option>
+                  <option>$other</option>
+                  <option>$no idea how much</option>
                 </select>
               </div>
               <button type="submit" disabled={submitting} className="bg-accent text-foreground font-heading font-bold py-3 px-8 rounded hover:brightness-110 transition-all disabled:opacity-50">

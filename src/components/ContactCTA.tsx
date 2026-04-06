@@ -82,10 +82,14 @@ const ContactCTA = () => {
             <label className="block text-sm font-heading font-bold text-foreground mb-2">Estimated Budget</label>
             <select name="budget" value={form.budget} onChange={handleChange} className="w-full border border-border py-3 px-4 rounded text-muted-foreground bg-background focus:outline-none focus:border-accent transition-colors">
               <option value="">Select</option>
+              <option>$1,000 - $5,000</option>
+              <option>$5,000 - $10,000</option>
               <option>$10,000 - $25,000</option>
               <option>$25,000 - $50,000</option>
               <option>$50,000 - $100,000</option>
               <option>$100,000+</option>
+              <option>$other</option>
+              <option>$no idea how much</option>
             </select>
           </div>
           <button type="submit" disabled={submitting} className="bg-accent text-foreground font-heading font-bold py-3 px-10 rounded hover:brightness-110 transition-all disabled:opacity-50">

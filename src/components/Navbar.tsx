@@ -47,9 +47,11 @@ const Navbar = () => {
               </Link>
             ))}
 
+            {/* ✅ Updated Button with #2098D1 */}
             <button
               onClick={() => setShowDialog(true)}
-              className="bg-accent text-white font-heading font-bold text-sm px-5 py-2 rounded hover:brightness-110 transition-all"
+              style={{ backgroundColor: "#2098D1" }}
+              className="text-white font-heading font-bold text-sm px-5 py-2 rounded hover:brightness-110 transition-all shadow-md"
             >
               Let's Talk →
             </button>
@@ -67,7 +69,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {open && (
-          <div className="md:hidden bg-white border-t px-4 pb-4">
+          <div className="md:hidden bg-white border-t px-4 pb-4 shadow-lg">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -83,12 +85,14 @@ const Navbar = () => {
               </Link>
             ))}
 
+            {/* ✅ Updated Mobile Button with #2098D1 */}
             <button
               onClick={() => {
                 setOpen(false);
                 setShowDialog(true);
               }}
-              className="block mt-2 w-full bg-accent text-white font-heading font-bold text-sm px-5 py-2 rounded text-center"
+              style={{ backgroundColor: "#2098D1" }}
+              className="block mt-2 w-full text-white font-heading font-bold text-sm px-5 py-3 rounded text-center shadow-sm"
             >
               Let's Talk →
             </button>
