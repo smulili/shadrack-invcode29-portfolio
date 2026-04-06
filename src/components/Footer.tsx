@@ -1,8 +1,31 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Mail, Phone, MapPin, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, Phone, MapPin, Github, Linkedin, Twitter, MessageCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Footer = () => {
   const location = useLocation();
+  const [email, setEmail] = useState("");
+  const [subscribing, setSubscribing] = useState(false);
+
+  const handleNewsletter = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setSubscribing(true);
+    const { error } = await supabase.from("newsletter_subscribers").insert({ email });
+    setSubscribing(false);
+    if (error) {
+      if (error.code === "23505") {
+        toast.info("You're already subscribed!");
+      } else {
+        toast.error("Failed to subscribe");
+      }
+    } else {
+      toast.success("Subscribed successfully!");
+      setEmail("");
+    }
+  };
 
   return (
     <footer className="bg-hero text-primary-foreground">
@@ -19,6 +42,7 @@ const Footer = () => {
                 { icon: Github, href: "https://github.com" },
                 { icon: Linkedin, href: "https://linkedin.com" },
                 { icon: Twitter, href: "https://twitter.com" },
+                { icon: MessageCircle, href: "https://wa.me/254702276873" },
               ].map(({ icon: Icon, href }, i) => (
                 <a
                   key={i}
@@ -65,11 +89,14 @@ const Footer = () => {
               <a href="mailto:hello@example.com" className="flex items-center gap-2 text-primary-foreground/60 hover:text-accent transition-colors text-sm">
                 <Mail className="w-4 h-4" /> hello@example.com
               </a>
-              <a href="tel:+1234567890" className="flex items-center gap-2 text-primary-foreground/60 hover:text-accent transition-colors text-sm">
-                <Phone className="w-4 h-4" /> +1 (234) 567-890
+              <a href="tel:+254702276873" className="flex items-center gap-2 text-primary-foreground/60 hover:text-accent transition-colors text-sm">
+                <Phone className="w-4 h-4" /> +254 702 276 873
+              </a>
+              <a href="https://wa.me/254702276873" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-foreground/60 hover:text-accent transition-colors text-sm">
+                <MessageCircle className="w-4 h-4" /> WhatsApp
               </a>
               <div className="flex items-center gap-2 text-primary-foreground/60 text-sm">
-                <MapPin className="w-4 h-4" /> Your Location
+                <MapPin className="w-4 h-4" /> TRM Mirema Drive, Nairobi
               </div>
             </div>
           </div>
@@ -80,17 +107,21 @@ const Footer = () => {
             <p className="text-primary-foreground/60 font-body text-sm italic mb-4">
               Get exclusive tech, industry & portfolio news.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="flex">
+            <form onSubmit={handleNewsletter} className="flex">
               <input
                 type="email"
                 placeholder="Your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className="flex-1 bg-primary-foreground/10 border border-primary-foreground/20 text-primary-foreground text-sm px-3 py-2 rounded-l focus:outline-none focus:border-accent"
               />
               <button
                 type="submit"
-                className="bg-accent text-accent-foreground font-heading font-bold text-xs px-4 py-2 rounded-r hover:brightness-110 transition-all tracking-wider"
+                disabled={subscribing}
+                className="bg-accent text-accent-foreground font-heading font-bold text-xs px-4 py-2 rounded-r hover:brightness-110 transition-all tracking-wider disabled:opacity-50"
               >
-                SIGN UP
+                {subscribing ? "..." : "SIGN UP"}
               </button>
             </form>
           </div>
