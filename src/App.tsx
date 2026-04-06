@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+// ✅ Changed BrowserRouter to HashRouter
+import { HashRouter, Route, Routes } from "react-router-dom"; 
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -50,7 +51,8 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner position="top-center" />
-        <BrowserRouter>
+        {/* ✅ Replaced BrowserRouter with HashRouter */}
+        <HashRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/services" element={<Services />} />
@@ -59,7 +61,7 @@ const App = () => {
             {/* Catch-all route for security and UX */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </TooltipProvider>
     </QueryClientProvider>
   );
