@@ -150,7 +150,9 @@ const Index = () => {
               Fullstack Software Developer & Digital Innovator
               Engineering high-impact solutions through intelligent systems.
             </p>
-            
+            <h1 className="text-xl md:text-2xl text-white/30 font-body mb-8 max-w-lg leading-relaxed"> 
+              Engineering high-impact solutions through intelligent systems.
+            </h1>
             <div className="flex gap-4">
               <a
                 href="#support"

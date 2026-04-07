@@ -3,12 +3,17 @@ import { Link, useLocation } from "react-router-dom";
 import { Mail, Phone, MapPin, Github, Linkedin, Twitter, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import logo from "../assets/logo3.svg"; // added logo
+import logo from "../assets/logo3.svg";
 
 const Footer = () => {
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [subscribing, setSubscribing] = useState(false);
+
+  // Helper to ensure page resets to top on link click
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
 
   const handleNewsletter = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +39,10 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-10">
           {/* Brand */}
           <div>
-            <img src={logo} alt="Logo" className="h-12  mb-4" />
+            {/* ✅ Logo now resets scroll to top of Home */}
+            <Link to="/" onClick={scrollToTop}>
+              <img src={logo} alt="Logo" className="h-12 mb-4 hover:opacity-80 transition-opacity" />
+            </Link>
 
             <p className="text-primary-foreground/60 font-body text-sm leading-relaxed mb-6">
               Software & Digital Innovation. Building solutions that make an impact.
@@ -73,6 +81,7 @@ const Footer = () => {
                 <Link
                   key={link.path}
                   to={link.path}
+                  onClick={scrollToTop} // ✅ Forces top of page on click
                   className={`block font-body text-sm transition-colors ${
                     location.pathname === link.path
                       ? "text-accent"
@@ -131,7 +140,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-primary-foreground/10 mt-12 pt-6 text-center text-primary-foreground/40 text-xs font-body">
-          © {new Date().getFullYear()} Portfolio. All rights reserved.Powered by invcode29 
+          © {new Date().getFullYear()} Shadrack Richards. All rights reserved. Powered by invcode29 
         </div>
       </div>
     </footer>
