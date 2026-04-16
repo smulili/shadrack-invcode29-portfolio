@@ -153,7 +153,7 @@ const Index = () => {
             
             <div className="flex gap-4">
               <a
-                href="#support"
+                href="#"
                 className="bg-accent text-accent-foreground font-heading font-bold px-8 py-3 rounded hover:brightness-110 transition-all"
               >
                 Support My Work
